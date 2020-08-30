@@ -1,0 +1,51 @@
+#Login as a root user
+sudo su -
+
+#install prerequisites jave et al
+cd /opt
+yum install java-11-openjdk-devel java-1.8.0-openjdk-devel -y
+yum install wget nano unzip -y
+yum installdat git-all -y
+yum install tar wget -y
+
+#Download and Unzip software
+wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.37/bin/apache-tomcat-9.0.37.zip
+unzip apache-tomcat-9.0.37.zip
+
+#Start Tomcat Service
+cd /opt/apache-tomcat-9.0.37/bin
+chmod u+x *.sh
+#sh /opt/apache-tomcat-9.0.37/bin/startup.sh
+
+#create symlink to start and stop Tomcat
+ln -s /opt/apache-tomcat-9.0.37/bin/startup.sh /usr/bin/startTomcat
+ln -s /opt/apache-tomcat-9.0.37/bin/shutdown.sh /usr/bin/stopTomcat
+startTomcat
+
+#Configure Context.xml so manager can be accessed from UI
+vi /opt/apache-tomcat-9.0.37/webapps/manager/META-INF/context.xml
+Comment the below lines
+<!-- <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" /> -->
+
+#Configure Context.xml so host-manager can be accessed from UI
+vi /opt/apache-tomcat-9.0.37/webapps/host-manager/META-INF/context.xml
+Comment the below lines
+<!-- <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" /> -->
+
+startTomcat
+stopTomcat
+#must stop and start tomcat after every configuration so changes can take effect in the UI
+
+http://IP:8080
+
+Troubleshooting
+--------------------
+
+tomcat server is not starting?
+a)Check the catalina.out file which is available  in conf dir.
+b)check java is installed or not using java -version command.
+
+Unable to access Tomcat server URL in browser?
+a)make sure port 8080 is opened in security groups - AWS ec2 instance.
