@@ -19,7 +19,7 @@ unzip sonarqube-7.8.zip
 
 useradd sonar
 # Grand sudo access to sonar user
-vi /etc/sudoers
+visudo #add below line to wheel group line same thing as root
 sonar  ALL=(ALL)	NOPASSWD: ALL
 chown -R sonar:sonar /opt/sonarqube-7.8/
 chmod -R 775 /opt/sonarqube-7.8/
@@ -29,8 +29,9 @@ su - sonar
 cd /opt/sonarqube-7.8/bin/linux-x86-64/ 
 sh sonar.sh start
 or
-sh /opt/sonarqube-7.8/bin/linux-x86-64/sonar.sh
-sonar.properties:  Config file
+sh /opt/sonarqube-7.8/bin/linux-x86-64/sonar.sh start
+
+# sonar.properties:  Config file
 
 #checking if sonarqube is running
 cd /opt/sonarqube-7.8/bin/linux-x86-64/ 
