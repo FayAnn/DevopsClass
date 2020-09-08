@@ -35,6 +35,9 @@ Comment the below lines
 <!-- <Valve className="org.apache.catalina.valves.RemoteAddrValve"
 allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" /> -->
 
+vi /opt/apache-tomcat-9.0.37/conf/tomcat-users.xml #add the line below
+<user username="admin" password="admin" roles="admin-gui,manager-gui,manager-script"/>
+
 startTomcat
 stopTomcat
 #must stop and start tomcat after every configuration so changes can take effect in the UI
