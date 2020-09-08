@@ -16,7 +16,7 @@ unzip apache-tomcat-9.0.37.zip
 #Start Tomcat Service
 cd /opt/apache-tomcat-9.0.37/bin
 chmod u+x *.sh
-#sh /opt/apache-tomcat-9.0.37/bin/startup.sh
+sh /opt/apache-tomcat-9.0.37/bin/startup.sh
 
 #create symlink to start and stop Tomcat
 ln -s /opt/apache-tomcat-9.0.37/bin/startup.sh /usr/bin/startTomcat
