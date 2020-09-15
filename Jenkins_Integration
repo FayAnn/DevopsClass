@@ -17,9 +17,9 @@ c. Configure
 3. Integrate Maven as build Tool
 a. Install maven: Gobal Tool Config>  Maven> Install maven> Apply
 b. Onproject: 
-	i.  configure
-	ii. Build triggers
-	ii. goal: mvn clean package
+	i.  configure > choose project
+	ii. Build triggers > Build > invoke top level target > mvn version 
+	ii. goals: clean package //no need to type mvn
 c. build now 
 
 Jobs stored here: /var/lib/jenkins/workspace/aws-ec/target
