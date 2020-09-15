@@ -25,7 +25,7 @@ c. build now
 Jobs stored here: /var/lib/jenkins/workspace/aws-ec/target
 
 4. Integrate Sonarqube as quality code
-A. start sonarqube
+A. start sonarqube //start as nexus user
 su -sonar
 sudo su
 
@@ -46,13 +46,12 @@ save
 build now
 A sonarqube will be build in project
 
-
 5. Integrate Nexus as remote Repo
 Start Nexus // as service or script
 su -nexus // start as nexus user
 sudo su
 systemctl start nexus or 
-cd /opt/nexus/bin/nexus
+cd /opt/nexus/bin
 sh nexus start
 
 IN Nexus:
@@ -68,17 +67,17 @@ In Jenkins
 cd /var/lib/jenkins/tool/hudson.tasks.Maven_MavenInstallation/maven3.6.3/conf
 vi settings.xml //to add nexus to jenkins
 add nexus Server under server tag
-     <server>
-	<id>nexus</id>
-	<username>admin</username>
-	<password>school1</password>
-     <server>
+    <server>
+      <id>nexus</id>
+      <username>admin</username>
+      <password>admin123</password>
+    </server>
 
 Do a Build to Nexus Server:
 locate project
 configure
 configure the dployment goal: Build > maven > command mvn clean deploy
-build nowcd
+build now
 
 
 3. Integrate Tomcat as Application Server
@@ -87,15 +86,15 @@ startTomcat
 
 On Jenkins:
 A. Install Deploy to container plugin
-B. Locate the war file that was created created
+B. Locate the war file that was created
 C. locate Project
 D. Configure
 E. pOst build action
 F.  choose war/ear to container
   	WAR/EAR Files: add **/mave-web-app.war //locate this war file at in the build output or the jenkins workspace at /var/lib/jenkins/workspace/projectname/target/
-	Choose Tomcat version
-G. add Tomcat credentials in Jenkins Credentials Provider
-H. add the tomcat url
+G Container: Choose Tomcat version
+H. add Tomcat credentials in Jenkins Credentials Provider
+I. add the tomcat url
 save
 build now
 
