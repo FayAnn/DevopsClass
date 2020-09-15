@@ -1,0 +1,119 @@
+Integrate Jenkins with git, maven, Sonaqube, nexus. tomcat
+
+Summary 
+1. Jenkins and maven- add maven in Global tool Configuration //no server needed
+2. Jenkins Sonarqube- Include sonar users, pwd and url in pom.xml under properties
+3. jenkins/nexus- 1. pom.xl: include nexus snapshot and releases url in pom.xml under distribution mgt tag.  2. configure Nexus server details in Settings.xml id, username, and pwd. Setting located conf dir under maven tool
+4. Jenkins/tomcat- 1. in tomcat server, conf dir configure tomcat user in the conf dir. Roles must be admin,manager-gui,managerscript  2. In Jenkins, install deploy to container plugin.
+
+1. In Jenkins:
+A. create project
+
+2. Integrate Git as source Mgt.  
+a. paste the project url for git and enter the GiT URL, username and pwd.
+b. do a build now //Jenkins will build git project.  work saved /var/lib/jenkins/workspace/<project name>
+c. Configure  
+
+3. Integrate Maven as build Tool
+a. Install maven: Gobal Tool Config>  Maven> Install maven> Apply
+b. Onproject: 
+	i.  configure
+	ii. Build triggers
+	ii. goal: mvn clean package
+c. build now 
+
+Jobs stored here: /var/lib/jenkins/workspace/aws-ec/target
+
+4. Integrate Sonarqube as quality code
+A. start sonarqube
+su -sonar
+sudo su
+
+cd /opt/sonarqube-7.8/bin/linux-x86-64
+sh sonar.sh start
+
+B. On Git:
+locate the project repo
+find and modify pom.xml
+under properties tab, replace the url for Sonarqube at sonar.host.url (IP:9000)
+commit changes
+
+C. On Jenkins:  2938dafaf126098c0f15c17c50f5c16de2d25cab
+go to project
+Configure
+Build: goals command under maven is clean package sonar:sonar 
+save 
+build now
+A sonarqube will be build in project
+
+
+5. Integrate Nexus as remote Repo
+Start Nexus // as service or script
+su -nexus // start as nexus user
+sudo su
+systemctl start nexus or 
+cd /opt/nexus/bin/nexus
+sh nexus start
+
+IN Nexus:
+create two repos: maven snapshot and mvn release
+copy url for repo
+
+In Git:
+edit the pom.xml
+distribution Management tag
+add url under  url and again under snapshot repo heading
+
+In Jenkins
+cd /var/lib/jenkins/tool/hudson.tasks.Maven_MavenInstallation/maven3.6.3/conf
+vi settings.xml //to add nexus to jenkins
+add nexus Server under server tag
+     <server>
+	<id>nexus</id>
+	<username>admin</username>
+	<password>school1</password>
+     <server>
+
+Do a Build to Nexus Server:
+locate project
+configure
+configure the dployment goal: Build > maven > command mvn clean deploy
+build nowcd
+
+
+3. Integrate Tomcat as Application Server
+Start Tomcat
+startTomcat
+
+On Jenkins:
+A. Install Deploy to container plugin
+B. Locate the war file that was created created
+C. locate Project
+D. Configure
+E. pOst build action
+F.  choose war/ear to container
+  	WAR/EAR Files: add **/mave-web-app.war //locate this war file at in the build output or the jenkins workspace at /var/lib/jenkins/workspace/projectname/target/
+	Choose Tomcat version
+G. add Tomcat credentials in Jenkins Credentials Provider
+H. add the tomcat url
+save
+build now
+
+Install
+
+Summary 
+1. Jenkins and maven- add maven in Global tool Configuration //no server needed
+2. Jenkins Sonarqube- Include sonar users, pwd and url in pom.xml under properties
+3. jenkins/nexus- 1. pom.xl: include nexus snapshot and releases url in pom.xml under distribution mgt tag.  2. configure Nexus server details in Settings.xml id, username, and pwd. Setting located conf dir under maven tool
+4. Jenkins/tomcat- 1. in tomcat server, conf dir configure tomcat user in the conf dir. Roles must be admin,manager-gui,managerscript  2. In Jenkins, install deploy to container plugin.
+
+
+
+
+Build Triggers
+poll scm //jenkins checks git for events/changes
+Webhook //git sends events from git to jenkins.  must create under your project. 
+
+#RUN_AS_USER= in /opt/sonarqube-7.8/bin/linux-x86-64/sonar.sh line 48 to RUN_AS_USER=sonar
+
+
